@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35806.99
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sunset_Editor", "Sunset_Editor\Sunset_Editor.vcxproj", "{A1B08EA4-7024-4ABA-ADFB-0D717D91F7D6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2B16064D-E217-4A53-AC53-336FBDEAFE86} = {2B16064D-E217-4A53-AC53-336FBDEAFE86}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sunset_WinAppMain", "..\Sunset_WinAppMain\SunsetWinAppMain\SunsetWinAppMain.vcxproj", "{3CF658C2-B9B3-41CB-B2E5-DE4BD42D2C55}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A1B08EA4-7024-4ABA-ADFB-0D717D91F7D6} = {A1B08EA4-7024-4ABA-ADFB-0D717D91F7D6}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sunset_Graphics", "..\Sunset_Graphics\SunsetGraphics\SunsetGraphics.vcxproj", "{2B16064D-E217-4A53-AC53-336FBDEAFE86}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A1B08EA4-7024-4ABA-ADFB-0D717D91F7D6}.Debug|x64.ActiveCfg = Debug|x64
+		{A1B08EA4-7024-4ABA-ADFB-0D717D91F7D6}.Debug|x64.Build.0 = Debug|x64
+		{A1B08EA4-7024-4ABA-ADFB-0D717D91F7D6}.Debug|x86.ActiveCfg = Debug|Win32
+		{A1B08EA4-7024-4ABA-ADFB-0D717D91F7D6}.Debug|x86.Build.0 = Debug|Win32
+		{A1B08EA4-7024-4ABA-ADFB-0D717D91F7D6}.Release|x64.ActiveCfg = Release|x64
+		{A1B08EA4-7024-4ABA-ADFB-0D717D91F7D6}.Release|x64.Build.0 = Release|x64
+		{A1B08EA4-7024-4ABA-ADFB-0D717D91F7D6}.Release|x86.ActiveCfg = Release|Win32
+		{A1B08EA4-7024-4ABA-ADFB-0D717D91F7D6}.Release|x86.Build.0 = Release|Win32
+		{3CF658C2-B9B3-41CB-B2E5-DE4BD42D2C55}.Debug|x64.ActiveCfg = Debug|x64
+		{3CF658C2-B9B3-41CB-B2E5-DE4BD42D2C55}.Debug|x64.Build.0 = Debug|x64
+		{3CF658C2-B9B3-41CB-B2E5-DE4BD42D2C55}.Debug|x86.ActiveCfg = Debug|Win32
+		{3CF658C2-B9B3-41CB-B2E5-DE4BD42D2C55}.Debug|x86.Build.0 = Debug|Win32
+		{3CF658C2-B9B3-41CB-B2E5-DE4BD42D2C55}.Release|x64.ActiveCfg = Release|x64
+		{3CF658C2-B9B3-41CB-B2E5-DE4BD42D2C55}.Release|x64.Build.0 = Release|x64
+		{3CF658C2-B9B3-41CB-B2E5-DE4BD42D2C55}.Release|x86.ActiveCfg = Release|Win32
+		{3CF658C2-B9B3-41CB-B2E5-DE4BD42D2C55}.Release|x86.Build.0 = Release|Win32
+		{2B16064D-E217-4A53-AC53-336FBDEAFE86}.Debug|x64.ActiveCfg = Debug|x64
+		{2B16064D-E217-4A53-AC53-336FBDEAFE86}.Debug|x64.Build.0 = Debug|x64
+		{2B16064D-E217-4A53-AC53-336FBDEAFE86}.Debug|x86.ActiveCfg = Debug|Win32
+		{2B16064D-E217-4A53-AC53-336FBDEAFE86}.Debug|x86.Build.0 = Debug|Win32
+		{2B16064D-E217-4A53-AC53-336FBDEAFE86}.Release|x64.ActiveCfg = Release|x64
+		{2B16064D-E217-4A53-AC53-336FBDEAFE86}.Release|x64.Build.0 = Release|x64
+		{2B16064D-E217-4A53-AC53-336FBDEAFE86}.Release|x86.ActiveCfg = Release|Win32
+		{2B16064D-E217-4A53-AC53-336FBDEAFE86}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5D5C44BA-0B07-4E0C-8253-F967DB3CA2E7}
+	EndGlobalSection
+EndGlobal
