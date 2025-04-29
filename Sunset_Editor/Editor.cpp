@@ -111,7 +111,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
 //------------------------------------------------------------------------------------------------
 int __stdcall PROJECT_MAIN_FUNC(HINSTANCE__* hInstance, int nShowCmd)
 {
-    if (GameEngine_Init() != TRUE) return 4;
+    if (EditorEngine_Init() != TRUE) return 4;
     
     WNDCLASS wc;
     wc.style            = 0;
@@ -355,12 +355,12 @@ int __stdcall PROJECT_MAIN_FUNC(HINSTANCE__* hInstance, int nShowCmd)
     delete(frameBuffer);
     delete(pCmd);
 
-    if (GameEngine_CleanUp() != TRUE) return 5;
+    if (EditorEngine_CleanUp() != TRUE) return 5;
     
 	return 0;
 }
 
-BOOL GameEngine_Init(void)
+BOOL EditorEngine_Init(void)
 {
 	static BOOL Complete = FALSE;
     if (Complete == TRUE) return TRUE;
@@ -377,17 +377,17 @@ BOOL GameEngine_Init(void)
 	return Complete;
 }
 
-void GameEngine_Update(void)
+void EditorEngine_Update(void)
 {
 
 }
 
-void GameEngine_Render(void)
+void EditorEngine_Render(void)
 {
 
 }
 
-BOOL GameEngine_CleanUp(void)
+BOOL EditorEngine_CleanUp(void)
 {
     static BOOL Complete = FALSE;
     if (Complete == TRUE) return TRUE;

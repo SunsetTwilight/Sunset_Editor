@@ -8,9 +8,9 @@ typedef int BOOL;
 
 SUNSET_EDITOR_API int __stdcall PROJECT_MAIN_FUNC(HINSTANCE__* hInstance, int nShowCmd);
 
-BOOL GameEngine_Init(void);
+BOOL EditorEngine_Init(void);
 void GameEngine_Update(void);
 void GameEngine_Render(void);
-BOOL GameEngine_CleanUp(void);
+BOOL EditorEngine_CleanUp(void);
 
 #endif // !_GAME_ENGINE_H_
