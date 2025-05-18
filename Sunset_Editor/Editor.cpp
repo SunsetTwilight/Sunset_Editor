@@ -10,10 +10,17 @@
 #include "../../Sunset_Graphics/SunsetGraphics/SunsetGraphics.h"
 #include "../../Sunset_Graphics/SunsetGraphics/Direct3D12/Direct3D_12.h"
 
+#include "../../Sunset_Graphics/SunsetGraphics/Direct3D12/VertexBuffer.h"
+#include "../../Sunset_Graphics/SunsetGraphics/Direct3D12/Shader.h"
+#include "../../Sunset_Graphics/SunsetGraphics/Direct3D12/RootSignature.h"
+#include "../../Sunset_Graphics/SunsetGraphics/Direct3D12/GraphicsPipelineState.h"
+
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_internal.h"
 #include "ImGui/imgui_impl_win32.h"
 #include "ImGui/imgui_impl_dx12.h"
+
+#include <DirectXMath.h>
 
 #pragma comment(lib, "./../x64/Debug/GameEngine/Sunset_Graphics.lib")
 
@@ -209,6 +216,62 @@ int __stdcall PROJECT_MAIN_FUNC(HINSTANCE__* hInstance, int nShowCmd)
     bool show_another_window = false;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
+    /* vertex buffer */
+    DX12::VertexBuffer spriteBuffer;
+    {
+        struct SpriteVertex
+        {
+            DirectX::XMFLOAT2 uv;
+            DirectX::XMFLOAT3 position;
+        };
+
+        SpriteVertex spriteVertices[] = {
+        { { 0.0f, 0.0f }, { -0.5f, +0.5f, 0.0f }, },
+        { { 0.0f, 1.0f }, { -0.5f, -0.5f, 0.0f }, },
+        { { 1.0f, 0.0f }, { +0.5f, +0.5f, 0.0f }, },
+        };
+
+        spriteBuffer.CreateVertexBuffer(
+            sizeof(SpriteVertex),
+            spriteVertices,
+            3
+        );
+    }
+    /* input element */
+    D3D12_INPUT_ELEMENT_DESC inputElementsSpriteBuffer[]{
+        { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+        { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+    };
+
+    /* shader load */
+    DX12::Shader vertexShader;
+    DX12::Shader pixelShader;
+    {
+        vertexShader.CreateVertexShaderEx(L"SpriteShader.hlsl");
+        pixelShader.CreatePixelShaderEx(L"SpriteShader.hlsl");
+    }
+
+    DX12::RootSignature rootSignature;
+    {
+        rootSignature.FetchRootSignatureFromShader(&vertexShader);
+    }
+
+    DX12::GraphicsPipelineState pipeline;
+    {
+        pipeline.SetRootSignature(&rootSignature);
+
+        pipeline.SetVertexShader(vertexShader.GetBlob());
+        pipeline.SetPixelShader(pixelShader.GetBlob());
+
+        pipeline.SetInputElementDesc(
+            inputElementsSpriteBuffer, 
+            _countof(inputElementsSpriteBuffer)
+        );
+
+        pipeline.CreateGraphicsPipeline();
+    }
+
+
     MSG msg{};
     bool done = false;
     while (!done)
@@ -235,11 +298,13 @@ int __stdcall PROJECT_MAIN_FUNC(HINSTANCE__* hInstance, int nShowCmd)
         static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_PassthruCentralNode;
         ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
 
-        ImGuiViewport* viewport = ImGui::GetMainViewport();
+        {
+            ImGuiViewport* viewport = ImGui::GetMainViewport();
 
-        ImGui::SetNextWindowPos(viewport->Pos);
-        ImGui::SetNextWindowSize(viewport->Size);
-        ImGui::SetNextWindowViewport(viewport->ID);
+            ImGui::SetNextWindowPos(viewport->Pos);
+            ImGui::SetNextWindowSize(viewport->Size);
+            ImGui::SetNextWindowViewport(viewport->ID);
+        }
 
         ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
         ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
@@ -279,6 +344,7 @@ int __stdcall PROJECT_MAIN_FUNC(HINSTANCE__* hInstance, int nShowCmd)
             }*/
         }
 
+        /* メニューバー */
         if (ImGui::BeginMenuBar())
         {
            /* if (ImGui::BeginMenu("Options"))
@@ -324,8 +390,38 @@ int __stdcall PROJECT_MAIN_FUNC(HINSTANCE__* hInstance, int nShowCmd)
 
         if (frameBuffer->Begin(cmdList)){
 
+            {
+                pipeline.Active(cmdList);
+                rootSignature.Active(cmdList);
+
+                {
+                    D3D12_VIEWPORT viewport{};
+
+                    D3D12_RECT rc;
+                    frameBuffer->GetViewRect(&rc);
+                    viewport.TopLeftX = 0.0f;
+                    viewport.TopLeftY = 0.0f;
+                    viewport.Width = (FLOAT)rc.right;
+                    viewport.Height = (FLOAT)rc.bottom;
+                    viewport.MinDepth = 0.0f;
+                    viewport.MaxDepth = 1.0f;
+
+                    D3D12_RECT scissorRect;
+                    scissorRect.left = 0;
+                    scissorRect.top = 0;
+                    scissorRect.right = scissorRect.left + rc.right;
+                    scissorRect.bottom = scissorRect.top + rc.bottom;
+
+                    cmdList->RSSetViewports(1, &viewport);
+                    cmdList->RSSetScissorRects(1, &scissorRect);
+                }
+
+                spriteBuffer.Draw(cmdList);
+            }
+
             g_pd3dSrvDescHeapAlloc.SetCommandList(cmdList);
             ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), cmdList);
+
 
             frameBuffer->End(pCmd->GetCommandQueue(), cmdList);
         }

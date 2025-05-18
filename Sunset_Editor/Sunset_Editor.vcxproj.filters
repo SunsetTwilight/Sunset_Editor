@@ -88,4 +88,7 @@
       <Filter>ImGui</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\x64\Debug\SpriteShader.hlsl" />
+  </ItemGroup>
 </Project>
